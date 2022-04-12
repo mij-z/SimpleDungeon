@@ -19,6 +19,7 @@ public class MainMenu {
         this.frame = frame;
 
         subMenus = new ArrayList<>();
+        subMenus.add(new StartOption(frame));
         subMenus.add(new QuitOption(frame));
 
         numOfSubMenus = subMenus.size();
@@ -38,8 +39,11 @@ public class MainMenu {
     }
 
     private void createMenuOptions(JPanel jPanel) {
-        for(int i = 0; i < numOfSubMenus; i++) {
+        for (int i = 0; i < numOfSubMenus; i++) {
             subMenus.get(i).createOption(jPanel);
+            if (i != numOfSubMenus - 1) {
+                jPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+            }
         }
     }
 
@@ -67,8 +71,8 @@ public class MainMenu {
         jPanels.get(0).setLayout(new GridBagLayout());
         createTitle(jPanels.get(0));
 
-        jPanels.get(1).setPreferredSize(new Dimension(192, 68 * numOfSubMenus));
-        jPanels.get(1).setMaximumSize(new Dimension(192, 68 * numOfSubMenus));
+        BoxLayout boxLayout = new BoxLayout(jPanels.get(1), BoxLayout.Y_AXIS);
+        jPanels.get(1).setLayout(boxLayout);
         createMenuOptions(jPanels.get(1));
 
         jPanels.get(2).setLayout(new GridBagLayout());
