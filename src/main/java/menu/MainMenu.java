@@ -1,7 +1,10 @@
 package menu;
 
+import misc.ResourceLoader;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -9,8 +12,16 @@ public class MainMenu {
 
     private final JFrame frame;
 
+    private final ArrayList<SubMenu> subMenus;
+    private final int numOfSubMenus;
+
     protected MainMenu(JFrame frame) {
         this.frame = frame;
+
+        subMenus = new ArrayList<>();
+        subMenus.add(new QuitOption(frame));
+
+        numOfSubMenus = subMenus.size();
     }
 
     private ArrayList<JPanel> createJPanels() {
@@ -26,8 +37,24 @@ public class MainMenu {
         jPanel.add(jLabel);
     }
 
+    private void createMenuOptions(JPanel jPanel) {
+        for(int i = 0; i < numOfSubMenus; i++) {
+            subMenus.get(i).createOption(jPanel);
+        }
+    }
+
     private void createHighScore(JPanel jPanel) {
-        // TODO implement file reader
+        ResourceLoader resourceLoader = ResourceLoader.getResourceLoader();
+
+        int highScore = 0;
+        try {
+            highScore = resourceLoader.getHighScore();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JLabel jLabel = new JLabel("High Score: " + highScore);
+        jPanel.add(jLabel);
     }
 
     protected void createMainMenu() {
@@ -39,6 +66,10 @@ public class MainMenu {
 
         jPanels.get(0).setLayout(new GridBagLayout());
         createTitle(jPanels.get(0));
+
+        jPanels.get(1).setPreferredSize(new Dimension(192, 68 * numOfSubMenus));
+        jPanels.get(1).setMaximumSize(new Dimension(192, 68 * numOfSubMenus));
+        createMenuOptions(jPanels.get(1));
 
         jPanels.get(2).setLayout(new GridBagLayout());
         createHighScore(jPanels.get(2));
