@@ -1,5 +1,7 @@
 package menu;
 
+import gui.Game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -53,6 +55,10 @@ public class StartOption extends SubMenu {
             if(e.getSource() == jButton) {
                 frame.getContentPane().removeAll();
                 frame.repaint();
+                Game game = new Game();
+                frame.add(game);
+                frame.setVisible(true);
+                game.start();
             }
         });
 
